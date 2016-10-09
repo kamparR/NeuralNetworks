@@ -40,10 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adaline.cs" />
+    <Compile Include="INeuralNetwork.cs" />
     <Compile Include="INeuron.cs" />
+    <Compile Include="NeuralNetwork.cs" />
     <Compile Include="Neuron.cs" />
+    <Compile Include="Perceptron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShuffleListExtension.cs" />
     <Compile Include="Simulation.cs" />
+    <Compile Include="WeightInitializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

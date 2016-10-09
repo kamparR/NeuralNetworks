@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    public interface INeuron
+    public interface INeuralNetwork
     {
-        void SetWeights(List<float> weights);
-        void SetParameters(float alpha);
-        float Compute(List<float> inputs);
+        List<float> Compute(List<float> inputs);
         float Train(List<float> inputs, float correctOutput);
     }
 }
