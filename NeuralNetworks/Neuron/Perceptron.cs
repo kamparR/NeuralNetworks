@@ -3,14 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeuralNetworks.ActivationFunction;
 
 namespace NeuralNetworks
 {
     public class Perceptron : Neuron
     {
-        protected override float ActivationFunction(float value)
+        public Perceptron(IActivationFunction activationFunction, float learningAlpha) :
+            base(activationFunction, learningAlpha)
         {
-            return value > 0 ? 1 : 0;
+        }
+
+        public Perceptron(Perceptron perceptron) : 
+            base(perceptron)
+        {
+        }
+
+        public override INeuron Copy()
+        {
+            return new Perceptron(this);
         }
 
         protected override float ComputeError(List<float> inputs, float correctOutput)

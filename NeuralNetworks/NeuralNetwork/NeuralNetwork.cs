@@ -6,22 +6,21 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks
 {
-    public class NeuralNetwork<T> : INeuralNetwork 
-        where T : INeuron, new()
+    public class NeuralNetwork : INeuralNetwork
     {
         private INeuron neuron;
         private WeightInitializer weightInitializer;
         private int inputs;
         private int outputs;
 
-        public NeuralNetwork(WeightInitializer weightInitializer, int inputs, int outputs, float alpha)
+        public NeuralNetwork(INeuron baseNeuron, int inputs, int outputs, WeightInitializer weightInitializer)
         {
-            this.weightInitializer = weightInitializer;
             this.inputs = inputs;
             this.outputs = outputs;
-            neuron = new T();
-            InitializeWeights();
-            neuron.SetParameters(alpha);
+            this.weightInitializer = weightInitializer;
+
+            InitializeNeurons(baseNeuron);
+            ReinitializeWeights();
         }
 
         public List<float> Compute(List<float> inputs)
@@ -30,14 +29,19 @@ namespace NeuralNetworks
             return new List<float> { output };
         }
 
-        public float Train(List<float> inputs, float correctOutput)
+        public float Train(List<float> inputs, List<float> correctOutputs)
         {
             float error = 0;
-            error = Math.Abs(neuron.Train(inputs, correctOutput));
-            return error;
+            error = neuron.Train(inputs, correctOutputs[0]);
+            return Math.Abs(error);
         }
 
-        private void InitializeWeights()
+        private void InitializeNeurons(INeuron baseNeuron)
+        {
+            this.neuron = baseNeuron.Copy();
+        }
+
+        public void ReinitializeWeights()
         {
             var weights = new List<float>();
             for (int i = 0; i < inputs + 1; i++)

@@ -40,15 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Adaline.cs" />
-    <Compile Include="INeuralNetwork.cs" />
-    <Compile Include="INeuron.cs" />
-    <Compile Include="NeuralNetwork.cs" />
-    <Compile Include="Neuron.cs" />
-    <Compile Include="Perceptron.cs" />
+    <Compile Include="ActivationFunction\BipolarBinaryFunction.cs" />
+    <Compile Include="ActivationFunction\IActivationFunction.cs" />
+    <Compile Include="ActivationFunction\UnipolarBinaryFunction.cs" />
+    <Compile Include="Neuron\Adaline.cs" />
+    <Compile Include="NeuralNetwork\INeuralNetwork.cs" />
+    <Compile Include="Neuron\INeuron.cs" />
+    <Compile Include="NeuralNetwork\NeuralNetwork.cs" />
+    <Compile Include="Neuron\Neuron.cs" />
+    <Compile Include="Neuron\Perceptron.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShuffleListExtension.cs" />
-    <Compile Include="Simulation.cs" />
     <Compile Include="WeightInitializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
