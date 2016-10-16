@@ -59,6 +59,10 @@ namespace NeuralNetworksConsole
             {
                 activationFunction = new BipolarBinaryFunction();
             }
+            else
+            {
+                Console.WriteLine($"Wrong activation function: {ActivationFunction}");
+            }
 
             return activationFunction;
         }
@@ -75,6 +79,10 @@ namespace NeuralNetworksConsole
             else if (equals("Adaline"))
             {
                 neuron = new Adaline(activationFunction, alpha);
+            }
+            else
+            {
+                Console.WriteLine($"Wrong neuron: {Neuron}");
             }
 
             return neuron;
@@ -101,8 +109,15 @@ namespace NeuralNetworksConsole
                     AlphaRepeat = new List<float>();
                 }
 
-                WeightsRepeat.Add(Weights);
-                AlphaRepeat.Add(Alpha);
+                if (Weights != null)
+                {
+                    WeightsRepeat.Add(Weights);
+                }
+
+                if (Math.Abs(Alpha) > float.Epsilon)
+                {
+                    AlphaRepeat.Add(Alpha);
+                }
 
                 foreach (var weight in WeightsRepeat)
                 {

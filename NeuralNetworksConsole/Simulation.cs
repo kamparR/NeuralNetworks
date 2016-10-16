@@ -24,27 +24,26 @@ namespace NeuralNetworks
             stopwatch = new Stopwatch();
         }
 
-        public int TrainByThreshold(List<Config.Data> trainData, float threshold)
+        public List<float> TrainByThreshold(List<Config.Data> trainData, float threshold)
         {
+            var errors = new List<float>();
             float error = 0;
-            int loops = 0;
             stopwatch.Restart();
 
             do
             {
-                error = Train(trainData);
-                //Console.WriteLine(error);
-                loops++;
+                error = Train(trainData) / trainData.Count;
+                errors.Add(error);
 
                 if (stopwatch.ElapsedMilliseconds > millisecondsTimeLimit)
                 {
                     stopwatch.Stop();
-                    return -1;
+                    return null;
                 }
 
             } while (error > threshold);
 
-            return loops;
+            return errors;
         }
 
         public void TrainByLoops(List<Config.Data> trainData, int loops)

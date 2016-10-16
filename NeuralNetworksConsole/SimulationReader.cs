@@ -22,6 +22,7 @@ namespace NeuralNetworksConsole
             var file = new StreamReader(path);
             string json = file.ReadToEnd();
             var configsToReduce = JsonConvert.DeserializeObject<List<Config>>(json);
+            Configs = new List<Config>();
 
             foreach (var config in configsToReduce)
             {

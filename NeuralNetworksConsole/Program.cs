@@ -35,30 +35,35 @@ namespace NeuralNetworksConsole
                 var simulation = config.CreateSimulation();
                 simulations.Add(simulation);
                 var loopsResults = new List<int>();
-                int loops = -1;
+                List<float> errors = null;
 
                 for (int j = 0; j < config.Repeat; j++)
                 {
                     simulation.Reset();
-                    loops = simulation.TrainByThreshold(config.TrainData, config.TrainThreshold);
+                    errors = simulation.TrainByThreshold(config.TrainData, config.TrainThreshold);
 
-                    if (loops < 0)
+                    if (errors == null)
                     {
                         break;
                     }
 
-                    loopsResults.Add(loops);
+                    loopsResults.Add(errors.Count);
                 }
 
                 string data = $"{config.GetCsvData()};";
 
-                if (loops < 0)
+                if (errors == null)
                 {
                     data += "timeout";
                 }
                 else
                 {
                     data += loopsResults.Sum()/(float) loopsResults.Count;
+
+                    foreach (float error in errors)
+                    {
+                        data += $";{error}";
+                    }
                 }
 
                 file.WriteLine(data);
