@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using NeuralNetworks;
 using NeuralNetworks.ActivationFunction;
 
-namespace NeuralNetworksConsole
+namespace NeuralNetworksSimulation
 {
-    class Config
+    public class Config
     {
         public string Neuron;
         public string ActivationFunction;

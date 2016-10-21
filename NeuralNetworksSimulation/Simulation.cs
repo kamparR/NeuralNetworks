@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using NeuralNetworksConsole;
+using NeuralNetworks;
 
-namespace NeuralNetworks
+namespace NeuralNetworksSimulation
 {
-    class Simulation
+    public class Simulation
     {
         private INeuralNetwork neuralNetwork;
         private bool logger;

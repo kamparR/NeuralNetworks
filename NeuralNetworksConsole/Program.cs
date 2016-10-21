@@ -4,8 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NeuralNetworks;
-using NeuralNetworks.ActivationFunction;
+using NeuralNetworksSimulation;
 
 namespace NeuralNetworksConsole
 {
@@ -25,7 +24,7 @@ namespace NeuralNetworksConsole
             var file = new StreamWriter($"../Simulations/{fileName}-results.csv");
             Console.WriteLine("Loaded configs");
 
-            var headers = $"{Config.GetCsvHeaders()};LoopsMean";
+            var headers = $"{Config.GetCsvHeaders()};LoopsMean;";
             file.WriteLine(headers);
             Console.WriteLine(headers);
             var simulations = new List<Simulation>();
@@ -72,9 +71,15 @@ namespace NeuralNetworksConsole
 
             file.Close();
             Console.WriteLine("Ended");
+
+            ConsoleMenu(simulations);
+        }
+
+        static void ConsoleMenu(List<Simulation> simulations)
+        {
             Console.WriteLine("Type 'q' to exit");
             string typed = "";
-            
+
             Func<string, bool> isExitString = value => value == "q" || value == "exit" || value == "quit" || string.IsNullOrEmpty(value);
 
             do
@@ -127,8 +132,8 @@ namespace NeuralNetworksConsole
                     } while (!isExitString(typed));
                 }
             } while (!isExitString(typed));
-           
-            
+
+
             Console.WriteLine("End");
         }
     }

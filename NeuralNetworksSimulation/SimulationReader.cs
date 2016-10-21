@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace NeuralNetworksConsole
+namespace NeuralNetworksSimulation
 {
-    class SimulationReader
+    public class SimulationReader
     {
         public List<Config> Configs { private set; get; }
 

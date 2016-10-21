@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworks", "NeuralNet
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworksConsole", "NeuralNetworksConsole\NeuralNetworksConsole.csproj", "{2A3F2E99-BCB6-4204-9168-435166E4E7F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworksSimulation", "NeuralNetworksSimulation\NeuralNetworksSimulation.csproj", "{ED099087-2863-459D-9107-9715AD05300C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworksGUI", "NeuralNetworksGUI\NeuralNetworksGUI.csproj", "{21122F8B-5E93-4AD5-A623-CAE89A2A62A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{2A3F2E99-BCB6-4204-9168-435166E4E7F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A3F2E99-BCB6-4204-9168-435166E4E7F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A3F2E99-BCB6-4204-9168-435166E4E7F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED099087-2863-459D-9107-9715AD05300C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED099087-2863-459D-9107-9715AD05300C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED099087-2863-459D-9107-9715AD05300C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED099087-2863-459D-9107-9715AD05300C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21122F8B-5E93-4AD5-A623-CAE89A2A62A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21122F8B-5E93-4AD5-A623-CAE89A2A62A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21122F8B-5E93-4AD5-A623-CAE89A2A62A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21122F8B-5E93-4AD5-A623-CAE89A2A62A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
