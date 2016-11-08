@@ -18,9 +18,9 @@ namespace NeuralNetworksSimulation
         public List<float> AlphaRepeat;
         public int Inputs;
         public int Outputs;
-        public List<Data> TrainData;
+        public List<TrainData> TrainData;
         public float TrainThreshold;
-        public List<Data> TestData;
+        public List<TrainData> TestData;
         public int Repeat = 1;
 
         public static string GetCsvHeaders()
@@ -136,12 +136,6 @@ namespace NeuralNetworksSimulation
             }
 
             return reducedConfigs;
-        }
-
-        public class Data
-        {
-            public List<float> Inputs;
-            public List<float> Outputs;
         }
 
         public class Range

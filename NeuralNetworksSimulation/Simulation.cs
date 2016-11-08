@@ -24,7 +24,7 @@ namespace NeuralNetworksSimulation
             stopwatch = new Stopwatch();
         }
 
-        public List<float> TrainByThreshold(List<Config.Data> trainData, float threshold)
+        public List<float> TrainByThreshold(List<TrainData> trainData, float threshold)
         {
             var errors = new List<float>();
             float error = 0;
@@ -46,7 +46,7 @@ namespace NeuralNetworksSimulation
             return errors;
         }
 
-        public void TrainByLoops(List<Config.Data> trainData, int loops)
+        public void TrainByLoops(List<TrainData> trainData, int loops)
         {
             for(int i = 0; i < loops; i++)
             {
@@ -76,7 +76,7 @@ namespace NeuralNetworksSimulation
         //    return error;
         //}
 
-        private float Train(List<Config.Data> trainData)
+        private float Train(List<TrainData> trainData)
         {
             List<int> indexList = Enumerable.Range(0, trainData.Count).ToList();
             indexList.Shuffle();

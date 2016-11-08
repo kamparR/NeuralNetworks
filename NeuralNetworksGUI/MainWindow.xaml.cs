@@ -1,19 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.DataVisualization.Charting;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using DigitImageParser;
+using NeuralNetworksSimulation;
 
 namespace NeuralNetworksGUI
 {
@@ -22,34 +12,40 @@ namespace NeuralNetworksGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<KeyValuePair<int, int>> source;
-        List<KeyValuePair<DateTime, double>> valueList = new List<KeyValuePair<DateTime, double>>();
-        Random rand = new Random();
+        private ObservableCollection<KeyValuePair<int, float>> source;
+        private Random rand = new Random();
+        private ImageParser imageParser;
+        private List<TrainData> trainData;
 
         public MainWindow()
         {
             InitializeComponent();
             LoadLineChartData();
+
+            imageParser = new ImageParser(@"D:\Studia\Semestr VII\Sieci neuronowe\NeuralNetworks\PngData\");
+            imageParser.Parse();
+            trainData = imageParser.GetTrainData();
+        }
+
+        private void StartSimulation()
+        {
+            
+        }
+
+        private void AddChartValue(float value)
+        {
+            source.Add(new KeyValuePair<int, float>(source.Count, value));
         }
 
         private void LoadLineChartData()
         {
-
-            //Example.DataContext = valueList;
-
-            source = new ObservableCollection<KeyValuePair<int, int>>
-            {
-                new KeyValuePair<int, int>(1, 100),
-                new KeyValuePair<int, int>(2, 90),
-                new KeyValuePair<int, int>(3, 70),
-                new KeyValuePair<int, int>(4, 65),
-            };
+            source = new ObservableCollection<KeyValuePair<int, float>>();
             ChartSeries.DataContext = source;
         }
 
         private void loadBtn_Click(object sender, RoutedEventArgs e)
         {
-            source.Add(new KeyValuePair<int, int>(source.Count, rand.Next(0, 100)));
+            AddChartValue((float)(rand.NextDouble() * 100));
         }
     }
 }

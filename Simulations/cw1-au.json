@@ -1,0 +1,27 @@
+[
+	{
+		neuron: "Adaline",
+		activationFunction: "UnipolarBinaryFunction",
+		weightsRepeat: [
+			{ min: -1, max: 1 },
+			{ min: -0.8, max: 0.8 },
+			{ min: -0.5, max: 0.5 },
+			{ min: -0.3, max: 0.3 },
+			{ min: -0.2, max: 0.2 },
+			{ min: -0.1, max: 0.1 },
+			{ min: -0.05, max: 0.05 },
+			{ min: -0.01, max: 0.01 }
+		],
+		alphaRepeat: [1, 0.9, 0.8, 0.6 0.5, 0.3, 0.2, 0.1, 0.05, 0.01],
+		inputs: 2,
+		outputs: 1,
+		trainData: [
+			{ inputs: [0, 0], outputs: [0] },
+			{ inputs: [1, 0], outputs: [1] },
+			{ inputs: [0, 1], outputs: [1] },
+			{ inputs: [1, 1], outputs: [1] },
+		],
+		trainThreshold: 0.25,
+		repeat: 10
+	},
+]

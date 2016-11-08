@@ -12,12 +12,12 @@
     <av:Grid>
         <DVC:Chart Name="mcChart" Background="LightSteelBlue" Margin="35,70,36,26">
             <DVC:Chart.Series>
-                <DVC:LineSeries Name="ChartSeries"  Title=" Monthly Count" ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
+                <DVC:LineSeries Name="ChartSeries"  Title="Error"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
                 </DVC:LineSeries>
             </DVC:Chart.Series>
 
             <DVC:Chart.Axes>
-                <DVC:LinearAxis Orientation="Y" Title="New Hires" Interval="40" Foreground="Black" Background="GreenYellow" FontFamily="Georgia" FontSize="14" FontWeight="Bold" />
+                <DVC:LinearAxis Orientation="Y" Title="Error" />
             </DVC:Chart.Axes>
 
         </DVC:Chart>

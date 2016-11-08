@@ -100,6 +100,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DigitImageParser\DigitImageParser.csproj">
+      <Project>{a076a692-c56c-4d07-9b61-2813aeeec40b}</Project>
+      <Name>DigitImageParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NeuralNetworksSimulation\NeuralNetworksSimulation.csproj">
+      <Project>{ED099087-2863-459D-9107-9715AD05300C}</Project>
+      <Name>NeuralNetworksSimulation</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
