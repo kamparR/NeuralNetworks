@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.ActivationFunction
 {
-    public class BipolarBinaryFunction : IActivationFunction
+    public class TanhFunction : IActivationFunction
     {
         public float Compute(float value)
         {
-            return value >= 0 ? 1 : -1;
+            return (float)Math.Tanh(value);
         }
 
         public float ComputeDerivative(float value)
         {
-            return 0;
+            return 1 - (value * value);
         }
     }
 }

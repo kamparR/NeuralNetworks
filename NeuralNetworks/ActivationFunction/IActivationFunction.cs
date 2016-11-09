@@ -9,5 +9,6 @@ namespace NeuralNetworks.ActivationFunction
     public interface IActivationFunction
     {
         float Compute(float value);
+        float ComputeDerivative(float value);
     }
 }

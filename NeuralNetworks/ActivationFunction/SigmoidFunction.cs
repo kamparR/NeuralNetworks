@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace NeuralNetworks.ActivationFunction
 {
-    public class BipolarBinaryFunction : IActivationFunction
+    public class SigmoidFunction : IActivationFunction
     {
         public float Compute(float value)
         {
-            return value >= 0 ? 1 : -1;
+            return 1 / (1 + (float)Math.Exp(-value));
         }
 
         public float ComputeDerivative(float value)
         {
-            return 0;
+            float s = Compute(value);
+            return s * (1 - s);
         }
     }
 }

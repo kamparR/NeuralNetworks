@@ -64,19 +64,39 @@ namespace NeuralNetworksSimulation
             neuralNetwork.ReinitializeWeights();
         }
 
-        //public float ComputeError(List<Tuple<List<float>, float>> trainData)
-        //{
-        //    float error = 0;
+        public float TestSoftMax(List<TrainData> trainData)
+        {
+            int correct = 0;
 
-        //    foreach (var data in trainData)
-        //    {
-        //        neuralNetwork.ComputeError();
-        //    }
+            foreach (var data in trainData)
+            {
+                var output = neuralNetwork.Compute(data.Inputs);
 
-        //    return error;
-        //}
+                if (SoftMax(output) == SoftMax(data.Outputs))
+                {
+                    correct++;
+                }
+            }
 
-        private float Train(List<TrainData> trainData)
+            return (float)correct/trainData.Count;
+        }
+
+        private int SoftMax(List<float> values)
+        {
+            int result = -1;
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (result < 0 || values[i] > values[result])
+                {
+                    result = i;
+                }
+            }
+
+            return result;
+        }
+
+        public float Train(List<TrainData> trainData)
         {
             List<int> indexList = Enumerable.Range(0, trainData.Count).ToList();
             indexList.Shuffle();

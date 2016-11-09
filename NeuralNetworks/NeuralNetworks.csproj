@@ -42,9 +42,13 @@
   <ItemGroup>
     <Compile Include="ActivationFunction\BipolarBinaryFunction.cs" />
     <Compile Include="ActivationFunction\IActivationFunction.cs" />
+    <Compile Include="ActivationFunction\SigmoidFunction.cs" />
+    <Compile Include="ActivationFunction\TanhFunction.cs" />
     <Compile Include="ActivationFunction\UnipolarBinaryFunction.cs" />
+    <Compile Include="NeuralNetwork\Layer.cs" />
     <Compile Include="Neuron\Adaline.cs" />
     <Compile Include="NeuralNetwork\INeuralNetwork.cs" />
+    <Compile Include="Neuron\BackpropagationNeuron.cs" />
     <Compile Include="Neuron\INeuron.cs" />
     <Compile Include="NeuralNetwork\NeuralNetwork.cs" />
     <Compile Include="Neuron\Neuron.cs" />

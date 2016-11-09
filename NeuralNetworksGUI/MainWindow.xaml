@@ -8,9 +8,9 @@
         xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="492" Width="632">
+        Title="MainWindow" Height="501" Width="632">
     <av:Grid>
-        <DVC:Chart Name="mcChart" Background="LightSteelBlue" Margin="35,70,36,26">
+        <DVC:Chart Name="mcChart" Background="LightSteelBlue" Margin="30,96,38,26">
             <DVC:Chart.Series>
                 <DVC:LineSeries Name="ChartSeries"  Title="Error"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
                 </DVC:LineSeries>
@@ -22,8 +22,11 @@
 
         </DVC:Chart>
 
-        <av:Button x:Name="loadBtn" Content="Load" HorizontalAlignment="Left" Margin="376,15,0,0" VerticalAlignment="Top" Width="75" Click="loadBtn_Click"/>
-        <av:Label x:Name="label" Content="Config file name:" HorizontalAlignment="Left" Margin="83,9,0,0" VerticalAlignment="Top"/>
-        <av:TextBox x:Name="configTextBox" HorizontalAlignment="Left" Height="23" Margin="188,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172"/>
+        <av:Button x:Name="LoadBtn" Content="Load" HorizontalAlignment="Left" Margin="376,15,0,0" VerticalAlignment="Top" Width="75" Click="LoadBtn_Click"/>
+        <av:Label Content="Config file name:" HorizontalAlignment="Left" Margin="83,9,0,0" VerticalAlignment="Top"/>
+        <av:TextBox x:Name="ConfigTextBox" HorizontalAlignment="Left" Height="23" Margin="188,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172" Text="cw2"/>
+        <av:Button x:Name="EvaluateBtn" IsEnabled="False"  Content="Evaluate" HorizontalAlignment="Left" Margin="83,57,0,0" VerticalAlignment="Top" Width="75" Click="EvaluateBtn_Click" />
+        <av:Button x:Name="TrainBtn" IsEnabled="False"  Content="Train" HorizontalAlignment="Left" Margin="188,57,0,0" VerticalAlignment="Top" Width="75" Click="TrainBtn_Click" />
+        <av:Button x:Name="ResetBtn" IsEnabled="False"  Content="Reset" HorizontalAlignment="Left" Margin="298,57,0,0" VerticalAlignment="Top" Width="75" Click="ResetBtn_Click" />
     </av:Grid>
 </av:Window>

@@ -8,47 +8,53 @@ namespace NeuralNetworks
 {
     public class NeuralNetwork : INeuralNetwork
     {
-        private INeuron neuron;
-        private WeightInitializer weightInitializer;
-        private int inputs;
-        private int outputs;
+        private List<Layer> layers;
 
-        public NeuralNetwork(INeuron baseNeuron, int inputs, int outputs, WeightInitializer weightInitializer)
+        public NeuralNetwork(INeuron baseNeuron, int inputs, int outputs, WeightInitializer weightInitializer, int hiddenNeurons)
         {
-            this.inputs = inputs;
-            this.outputs = outputs;
-            this.weightInitializer = weightInitializer;
-
-            InitializeNeurons(baseNeuron);
-            ReinitializeWeights();
+            CreateLayers(baseNeuron, inputs, outputs, weightInitializer, hiddenNeurons);
         }
 
         public List<float> Compute(List<float> inputs)
         {
-            float output = neuron.Compute(inputs);
-            return new List<float> { output };
+            List<float> output = inputs;
+
+            foreach (var layer in layers)
+            {
+                output = layer.Compute(output);
+            }
+
+            return output;
         }
 
-        public float Train(List<float> inputs, List<float> correctOutputs)
+        public float Train(List<float> inputs, List<float> correctOutputs)//TODO
         {
             float error = 0;
-            error = neuron.Train(inputs, correctOutputs[0]);
+            //error = neuron.Train(inputs, correctOutputs[0]);
             return Math.Abs(error);
         }
 
-        private void InitializeNeurons(INeuron baseNeuron)
+        private void CreateLayers(INeuron baseNeuron, int inputs, int outputs, WeightInitializer weightInitializer, int hiddenNeurons)//TODO multi hidden layer support
         {
-            this.neuron = baseNeuron.Copy();
+            layers = new List<Layer>();
+
+            if (hiddenNeurons > 0)
+            {
+                layers.Add(new Layer(inputs, hiddenNeurons, baseNeuron, weightInitializer));
+                layers.Add(new Layer(hiddenNeurons, outputs, baseNeuron, weightInitializer));
+            }
+            else
+            {
+                layers.Add(new Layer(inputs, outputs, baseNeuron, weightInitializer));
+            }
         }
 
         public void ReinitializeWeights()
         {
-            var weights = new List<float>();
-            for (int i = 0; i < inputs + 1; i++)
+            foreach (var layer in layers)
             {
-                weights.Add(weightInitializer.NextWeight());
+                layer.ReinitializeWeights();
             }
-            neuron.SetWeights(weights);
         }
     }
 }

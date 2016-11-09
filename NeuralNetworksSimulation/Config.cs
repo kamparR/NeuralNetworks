@@ -22,16 +22,17 @@ namespace NeuralNetworksSimulation
         public float TrainThreshold;
         public List<TrainData> TestData;
         public int Repeat = 1;
+        public int HiddenNeurons = 0;
 
         public static string GetCsvHeaders()
         {
-            var headers = new[] { "Neuron", "ActivationFunction", "MinWeights", "MaxWeights", "Alpha", "Inputs", "Outputs", "TrainThreshold", "Repeat" };
+            var headers = new[] { "Neuron", "ActivationFunction", "MinWeights", "MaxWeights", "Alpha", "Inputs", "Outputs", "TrainThreshold", "Repeat", "HiddenNeurons" };
             return string.Join(";", headers);
         }
 
         public string GetCsvData()
         {
-            var data = new string[] { Neuron, ActivationFunction, Weights.Min.ToString(), Weights.Max.ToString(), Alpha.ToString(), Inputs.ToString(), Outputs.ToString(), TrainThreshold.ToString(), Repeat.ToString() };
+            var data = new string[] { Neuron, ActivationFunction, Weights.Min.ToString(), Weights.Max.ToString(), Alpha.ToString(), Inputs.ToString(), Outputs.ToString(), TrainThreshold.ToString(), Repeat.ToString(), HiddenNeurons.ToString() };
             return string.Join(";", data);
         }
 
@@ -40,7 +41,7 @@ namespace NeuralNetworksSimulation
             var weightInitializer = new WeightInitializer(Weights.Min, Weights.Max);
             var activationFunction = CreateActivationFunction();
             var neuron = CreateNeuron(activationFunction, Alpha);
-            var neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer);
+            var neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer, HiddenNeurons);
             var simulation = new Simulation(neuralNetwork, true);
             return simulation;
         }
@@ -58,6 +59,14 @@ namespace NeuralNetworksSimulation
             else if (equals("BipolarBinaryFunction"))
             {
                 activationFunction = new BipolarBinaryFunction();
+            }
+            else if (equals("SigmoidFunction"))
+            {
+                activationFunction = new SigmoidFunction();
+            }
+            else if (equals("TanhFunction"))
+            {
+                activationFunction = new TanhFunction();
             }
             else
             {
@@ -79,6 +88,10 @@ namespace NeuralNetworksSimulation
             else if (equals("Adaline"))
             {
                 neuron = new Adaline(activationFunction, alpha);
+            }
+            else if (equals("BackpropagationNeuron"))
+            {
+                neuron = new BackpropagationNeuron(activationFunction, alpha);
             }
             else
             {

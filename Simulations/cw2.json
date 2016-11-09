@@ -1,0 +1,12 @@
+[
+	{
+		neuron: "BackpropagationNeuron",
+		activationFunction: "SigmoidFunction",
+		weights: { min: -0.2, max: 0.2 },
+		alpha: 0.3,
+		inputs: 70,
+		outputs: 10,
+		hiddenNeurons: 30,
+		repeat: 1
+	},
+]

@@ -12,5 +12,10 @@ namespace NeuralNetworks.ActivationFunction
         {
             return value >= 0 ? 1 : 0;
         }
+
+        public float ComputeDerivative(float value)
+        {
+            return 0;
+        }
     }
 }
