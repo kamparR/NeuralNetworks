@@ -35,6 +35,24 @@ namespace NeuralNetworks
             return output;
         }
 
+        public List<float> Train(List<float> inputs, List<float> error)
+        {
+            List<float> currentError = Enumerable.Repeat(0f, this.inputs).ToList();
+
+            for (var i = 0; i < this.outputs; i++)
+            {
+                List<float> weightsCopy = new List<float>(neurons[i].Weights);
+                float neuronError = neurons[i].Train(inputs, error[i]);
+
+                for (int j = 0; j < this.inputs; j++)
+                {
+                    currentError[j] += weightsCopy[j] * neuronError;
+                }
+            }
+
+            return currentError;
+        }
+
         private void InitializeNeurons(INeuron baseNeuron)
         {
             neurons = new List<INeuron>();
@@ -54,7 +72,7 @@ namespace NeuralNetworks
                 {
                     weights.Add(weightInitializer.NextWeight());
                 }
-                neuron.SetWeights(weights);
+                neuron.Weights = weights;
             }
         }
     }

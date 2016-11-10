@@ -10,9 +10,10 @@ namespace NeuralNetworks
 {
     public abstract class Neuron : INeuron
     {
-        protected List<float> weights;
+        public List<float> Weights { get; set; }
         protected float learningAlpha;
         protected IActivationFunction activationFunction;
+        protected float lastOutput;
 
         protected Neuron(IActivationFunction activationFunction, float learningAlpha)
         {
@@ -30,29 +31,25 @@ namespace NeuralNetworks
 
         public abstract INeuron Copy();
 
-        public void SetWeights(List<float> weights)
-        {
-            this.weights = weights;
-        }
-
         public float Compute(List<float> inputs)
         {
-            Debug.Assert(weights != null);
+            Debug.Assert(Weights != null);
 
             float sumOfProduct = SumOfProduct(inputs);
-            return activationFunction.Compute(sumOfProduct);
+            lastOutput = activationFunction.Compute(sumOfProduct);
+            return lastOutput;
         }
 
         public virtual float Train(List<float> inputs, float correctOutput)
         {
-            Debug.Assert(weights != null);
+            Debug.Assert(Weights != null);
 
             float error = ComputeError(inputs, correctOutput);
 
-            for (int i = 0; i < weights.Count; i++)
+            for (int i = 0; i < Weights.Count; i++)
             {
                 float input = i < inputs.Count ? inputs[i] : 1;
-                weights[i] += learningAlpha*error*input;
+                Weights[i] += learningAlpha*error*input;
             }
 
             return error;
@@ -64,10 +61,10 @@ namespace NeuralNetworks
         {
             float sum = 0;
 
-            for (int i = 0; i < weights.Count; i++)
+            for (int i = 0; i < Weights.Count; i++)
             {
                 float input = i < inputs.Count ? inputs[i] : 1;
-                sum += input * weights[i];
+                sum += input * Weights[i];
             }
 
             return sum;

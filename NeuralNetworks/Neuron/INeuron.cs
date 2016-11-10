@@ -9,7 +9,8 @@ namespace NeuralNetworks
 {
     public interface INeuron
     {
-        void SetWeights(List<float> weights);
+        List<float> Weights { get; set; }
+
         float Compute(List<float> inputs);
         float Train(List<float> inputs, float correctOutput);
         INeuron Copy();

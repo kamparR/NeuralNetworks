@@ -110,7 +110,7 @@ namespace NeuralNetworksSimulation
                 error += neuralNetwork.Train(inputs, outputs);
             }
 
-            return error;
+            return error / trainData.Count;
         }
 
 
