@@ -16,12 +16,14 @@ namespace NeuralNetworksSimulation
         private bool logger;
         private Stopwatch stopwatch;
         private long millisecondsTimeLimit = 2000;
+        private float validationData;
 
-        public Simulation(INeuralNetwork neuralNetwork, bool logger = false)
+        public Simulation(INeuralNetwork neuralNetwork, bool logger = false, float validationData = 0f)
         {
             this.neuralNetwork = neuralNetwork;
             this.logger = logger;
             stopwatch = new Stopwatch();
+            this.validationData = validationData;
         }
 
         public List<float> TrainByThreshold(List<TrainData> trainData, float threshold)
@@ -102,15 +104,38 @@ namespace NeuralNetworksSimulation
             indexList.Shuffle();
             float error = 0;
 
-            foreach (int index in indexList)
-            {
-                var inputs = trainData[index].Inputs;
-                var outputs = trainData[index].Outputs;
+            int validationCount = ((int)(trainData.Count*validationData)).Clamp(0, trainData.Count - 1);
+            int testCount = trainData.Count - validationCount;
 
-                error += neuralNetwork.Train(inputs, outputs);
+            for (int i = 0; i < indexList.Count; i++)
+            {
+                var inputs = trainData[indexList[i]].Inputs;
+                var outputs = trainData[indexList[i]].Outputs;
+
+                if (validationCount == 0)
+                {
+                    error += neuralNetwork.Train(inputs, outputs) / trainData.Count;
+                }
+                else
+                {
+                    if (i < testCount)
+                    {
+                        neuralNetwork.Train(inputs, outputs);
+                    }
+                    else
+                    {
+                        var output = neuralNetwork.Compute(inputs);
+
+                        if (SoftMax(output) != SoftMax(outputs))
+                        {
+                            error += 100f / validationCount;
+                        }
+                    }
+                }
+                
             }
 
-            return error / trainData.Count;
+            return error;
         }
 
 

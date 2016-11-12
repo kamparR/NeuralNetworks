@@ -4,29 +4,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeuralNetworksGUI"
-        xmlns:DV="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
-        xmlns:DVC="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        xmlns:datavis="clr-namespace:System.Windows.Controls.DataVisualization;assembly=System.Windows.Controls.DataVisualization.Toolkit"
+        xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit"
         xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         mc:Ignorable="d"
         Title="MainWindow" Height="501" Width="632">
     <av:Grid>
-        <DVC:Chart Name="mcChart" Background="LightSteelBlue" Margin="30,96,38,26">
-            <DVC:Chart.Series>
-                <DVC:LineSeries Name="ChartSeries"  Title="Error"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
-                </DVC:LineSeries>
-            </DVC:Chart.Series>
 
-            <DVC:Chart.Axes>
-                <DVC:LinearAxis Orientation="Y" Title="Error" />
-            </DVC:Chart.Axes>
+        <chartingToolkit:Chart Name="mcChart" Background="LightSteelBlue" Margin="30,96,38,26">
 
-        </DVC:Chart>
+            <chartingToolkit:Chart.Series>
+                <chartingToolkit:LineSeries Name="ChartSeries"  Title="Error"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="chartingToolkit:LineDataPoint">
+                            <Setter Property="Width" Value="0"/>
+                            <Setter Property="Height" Value="0"/>
+                            <Setter Property="Opacity" Value="0" />
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
+            </chartingToolkit:Chart.Series>
+
+            <chartingToolkit:Chart.Axes>
+                <chartingToolkit:LinearAxis Orientation="Y" Title="Error" Minimum="0" />
+            </chartingToolkit:Chart.Axes>
+
+            <chartingToolkit:Chart.LegendStyle>
+                <Style TargetType="datavis:Legend">
+                    <Setter Property="Width" Value="0" />
+                </Style>
+            </chartingToolkit:Chart.LegendStyle>
+
+        </chartingToolkit:Chart>
 
         <av:Button x:Name="LoadBtn" Content="Load" HorizontalAlignment="Left" Margin="376,15,0,0" VerticalAlignment="Top" Width="75" Click="LoadBtn_Click"/>
         <av:Label Content="Config file name:" HorizontalAlignment="Left" Margin="83,9,0,0" VerticalAlignment="Top"/>
         <av:TextBox x:Name="ConfigTextBox" HorizontalAlignment="Left" Height="23" Margin="188,13,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="172" Text="cw2"/>
         <av:Button x:Name="EvaluateBtn" IsEnabled="False"  Content="Evaluate" HorizontalAlignment="Left" Margin="83,57,0,0" VerticalAlignment="Top" Width="75" Click="EvaluateBtn_Click" />
         <av:Button x:Name="TrainBtn" IsEnabled="False"  Content="Train" HorizontalAlignment="Left" Margin="188,57,0,0" VerticalAlignment="Top" Width="75" Click="TrainBtn_Click" />
-        <av:Button x:Name="ResetBtn" IsEnabled="False"  Content="Reset" HorizontalAlignment="Left" Margin="298,57,0,0" VerticalAlignment="Top" Width="75" Click="ResetBtn_Click" />
+        <av:Button x:Name="StopBtn" IsEnabled="False"  Content="Stop" HorizontalAlignment="Left" Margin="298,57,0,0" VerticalAlignment="Top" Width="75" Click="StopBtn_Click" />
+        <av:Button x:Name="ResetBtn" IsEnabled="False"  Content="Reset" HorizontalAlignment="Left" Margin="411,57,0,0" VerticalAlignment="Top" Width="75" Click="ResetBtn_Click" />
     </av:Grid>
 </av:Window>

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using DigitImageParser;
+using System.Windows.Forms;
 using NeuralNetworksSimulation;
+using MessageBox = System.Windows.MessageBox;
 
 namespace NeuralNetworksGUI
 {
@@ -13,16 +17,18 @@ namespace NeuralNetworksGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ObservableCollection<KeyValuePair<int, float>> source;
+        public MTObservableCollection<KeyValuePair<int, float>> ChartSource { get; }
         private Random rand = new Random();
         private ImageParser imageParser;
         private List<TrainData> trainData;
         private List<Simulation> simulations;
+        private Timer trainTimer;
 
         public MainWindow()
         {
             InitializeComponent();
-            LoadLineChartData();
+            ChartSource = new MTObservableCollection<KeyValuePair<int, float>>();
+            ChartSeries.DataContext = ChartSource;
         }
 
         private void EvaluateSimulations()
@@ -39,16 +45,15 @@ namespace NeuralNetworksGUI
 
         private void TrainSimulations()
         {
-            foreach (var simulation in simulations)
+            trainTimer = new Timer();
+            trainTimer.Interval = 1;
+            trainTimer.Tick += (s, args) =>
             {
-                for (int i = 0; i < 100; i++)
-                {
-                    float error = simulation.Train(trainData);
-                    AddChartValue(error);
-                }
-            }
-
-            EnableButtons();
+                float error = simulations[0].Train(trainData);
+                //var correct = simulations[0].TestSoftMax(trainData);
+                AddChartValue(error);
+            };
+            trainTimer.Start();
         }
 
         private void ResetSimulations()
@@ -58,18 +63,13 @@ namespace NeuralNetworksGUI
                 simulation.Reset();
             }
 
+            ChartSource.Clear();
             EnableButtons();
         }
 
         private void AddChartValue(float value)
         {
-            source.Add(new KeyValuePair<int, float>(source.Count, value));
-        }
-
-        private void LoadLineChartData()
-        {
-            source = new ObservableCollection<KeyValuePair<int, float>>();
-            ChartSeries.DataContext = source;
+            ChartSource.Add(new KeyValuePair<int, float>(ChartSource.Count, value));
         }
 
         private void LoadBtn_Click(object sender, RoutedEventArgs e)
@@ -117,6 +117,8 @@ namespace NeuralNetworksGUI
         private void TrainBtn_Click(object sender, RoutedEventArgs e)
         {
             DisableButtons();
+            StopBtn.IsEnabled = true;
+            LoadBtn.IsEnabled = false;
             TrainSimulations();
         }
 
@@ -124,6 +126,14 @@ namespace NeuralNetworksGUI
         {
             DisableButtons();
             ResetSimulations();
+        }
+
+        private void StopBtn_Click(object sender, RoutedEventArgs e)
+        {
+            StopBtn.IsEnabled = false;
+            LoadBtn.IsEnabled = true;
+            trainTimer.Stop();
+            EvaluateSimulations();
         }
     }
 }

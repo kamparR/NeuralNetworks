@@ -23,6 +23,7 @@ namespace NeuralNetworksSimulation
         public List<TrainData> TestData;
         public int Repeat = 1;
         public int HiddenNeurons = 0;
+        public float ValidationData = 0;
 
         public static string GetCsvHeaders()
         {
@@ -42,7 +43,7 @@ namespace NeuralNetworksSimulation
             var activationFunction = CreateActivationFunction();
             var neuron = CreateNeuron(activationFunction, Alpha);
             var neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer, HiddenNeurons);
-            var simulation = new Simulation(neuralNetwork, true);
+            var simulation = new Simulation(neuralNetwork, true, ValidationData);
             return simulation;
         }
 
