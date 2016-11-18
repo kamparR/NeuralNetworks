@@ -74,7 +74,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MTObservableCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -110,6 +109,10 @@
     <ProjectReference Include="..\NeuralNetworksSimulation\NeuralNetworksSimulation.csproj">
       <Project>{ED099087-2863-459D-9107-9715AD05300C}</Project>
       <Name>NeuralNetworksSimulation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{A1A34201-64F4-4FCF-9D16-5439F3BEF19C}</Project>
+      <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

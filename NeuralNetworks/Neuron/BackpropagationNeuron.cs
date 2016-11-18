@@ -9,14 +9,19 @@ namespace NeuralNetworks
 {
     public class BackpropagationNeuron : Neuron
     {
-        public BackpropagationNeuron(IActivationFunction activationFunction, float learningAlpha) :
+        private float momentum;
+        private List<float> weightsDelta;
+
+        public BackpropagationNeuron(IActivationFunction activationFunction, float learningAlpha, float momentum = 0f) :
             base(activationFunction, learningAlpha)
         {
+            this.momentum = momentum;
         }
 
         public BackpropagationNeuron(BackpropagationNeuron backpropagationNeuron) : 
             base(backpropagationNeuron)
         {
+            this.momentum = backpropagationNeuron.momentum;
         }
 
         public override INeuron Copy()
@@ -26,12 +31,19 @@ namespace NeuralNetworks
 
         public override float Train(List<float> inputs, float errorDifferent)
         {
+            if (weightsDelta == null || weightsDelta.Count != Weights.Count)
+            {
+                InitializeWeightsDelta();
+            }
+
             float error = ComputeError(inputs, errorDifferent);
 
             for (int i = 0; i < Weights.Count; i++)
             {
                 float input = i < inputs.Count ? inputs[i] : 1;
-                Weights[i] -= learningAlpha * error * input;
+                float delta = learningAlpha*error*input - momentum * weightsDelta[i];
+                Weights[i] -= delta;
+                weightsDelta[i] = delta;
             }
 
             return error;
@@ -42,6 +54,11 @@ namespace NeuralNetworks
             float currentOutput = lastOutput;//Compute(inputs);
             return activationFunction.ComputeDerivative(currentOutput) * errorDifferent;
             //return activationFunction.ComputeDerivative(activationFunction.ComputeDerivative(currentOutput)) * errorDifferent;
+        }
+
+        private void InitializeWeightsDelta()
+        {
+            weightsDelta = Enumerable.Repeat(0f, Weights.Count).ToList();
         }
     }
 }

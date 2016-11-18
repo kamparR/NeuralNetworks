@@ -11,6 +11,9 @@ namespace NeuralNetworksSimulation
     public class SimulationReader
     {
         public List<Config> Configs { private set; get; }
+        public string ImagesPath { set; get; }
+        public float ImagesDisturbanceProbability { set; get; }
+        public float ImageDisturbanceMaxDifference { set; get; }
 
         public void ReadConfigsFile(string path)
         {
@@ -35,6 +38,14 @@ namespace NeuralNetworksSimulation
                 {
                     Configs.Add(config);
                 }
+            }
+
+            if (Configs.Count > 0)
+            {
+                var config = Configs[0];
+                ImagesPath = config.ImagesPath;
+                ImagesDisturbanceProbability = config.ImagesDisturbanceProbability;
+                ImageDisturbanceMaxDifference = config.ImageDisturbanceMaxDifference;
             }
         }
 

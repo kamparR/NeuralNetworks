@@ -8,6 +8,10 @@
 		outputs: 10,
 		hiddenNeurons: 30,
 		validationData: 0.2,
+		momentum: 0.5,
+		imagesPath: "D:/Studia/Semestr VII/Sieci neuronowe/NeuralNetworks/PngData/",
+		imagesDisturbanceProbability: 0.2,
+		imageDisturbanceMaxDifference: 0.3,
 		repeat: 1
 	},
 ]

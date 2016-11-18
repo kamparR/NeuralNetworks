@@ -9,6 +9,7 @@ using DigitImageParser;
 using System.Windows.Forms;
 using NeuralNetworksSimulation;
 using MessageBox = System.Windows.MessageBox;
+using Utils;
 
 namespace NeuralNetworksGUI
 {
@@ -17,7 +18,8 @@ namespace NeuralNetworksGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MTObservableCollection<KeyValuePair<int, float>> ChartSource { get; }
+        public MTObservableCollection<KeyValuePair<int, float>> TrainSeriesSource { get; }
+        public MTObservableCollection<KeyValuePair<int, float>> TestSeriesSource { get; }
         private Random rand = new Random();
         private ImageParser imageParser;
         private List<TrainData> trainData;
@@ -27,8 +29,10 @@ namespace NeuralNetworksGUI
         public MainWindow()
         {
             InitializeComponent();
-            ChartSource = new MTObservableCollection<KeyValuePair<int, float>>();
-            ChartSeries.DataContext = ChartSource;
+            TrainSeriesSource = new MTObservableCollection<KeyValuePair<int, float>>();
+            TestSeriesSource = new MTObservableCollection<KeyValuePair<int, float>>();
+            TrainSeries.DataContext = TrainSeriesSource;
+            TestSeries.DataContext = TestSeriesSource;
         }
 
         private void EvaluateSimulations()
@@ -50,8 +54,10 @@ namespace NeuralNetworksGUI
             trainTimer.Tick += (s, args) =>
             {
                 float error = simulations[0].Train(trainData);
-                //var correct = simulations[0].TestSoftMax(trainData);
-                AddChartValue(error);
+                float correct = simulations[0].TestSoftMax(trainData);
+                
+                AddTrainSeriesValue(error * 100f);
+                AddTestSeriesValue((1f - correct) * 100f);
             };
             trainTimer.Start();
         }
@@ -63,13 +69,20 @@ namespace NeuralNetworksGUI
                 simulation.Reset();
             }
 
-            ChartSource.Clear();
+            trainData.Shuffle();
+            TrainSeriesSource.Clear();
+            TestSeriesSource.Clear();
             EnableButtons();
         }
 
-        private void AddChartValue(float value)
+        private void AddTrainSeriesValue(float value)
         {
-            ChartSource.Add(new KeyValuePair<int, float>(ChartSource.Count, value));
+            TrainSeriesSource.Add(new KeyValuePair<int, float>(TrainSeriesSource.Count, value));
+        }
+
+        private void AddTestSeriesValue(float value)
+        {
+            TestSeriesSource.Add(new KeyValuePair<int, float>(TestSeriesSource.Count, value));
         }
 
         private void LoadBtn_Click(object sender, RoutedEventArgs e)
@@ -87,8 +100,9 @@ namespace NeuralNetworksGUI
 
             simulations = simulationReader.Configs.ConvertAll(x => x.CreateSimulation());
 
-            imageParser = new ImageParser(@"D:\Studia\Semestr VII\Sieci neuronowe\NeuralNetworks\PngData\");
+            imageParser = new ImageParser(simulationReader.ImagesPath);
             imageParser.Parse();
+            imageParser.AddDisturbance(simulationReader.ImagesDisturbanceProbability, simulationReader.ImageDisturbanceMaxDifference);
             trainData = imageParser.GetTrainData();
 
             EnableButtons();

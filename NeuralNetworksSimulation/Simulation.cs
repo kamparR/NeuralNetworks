@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NeuralNetworks;
+using Utils;
 
 namespace NeuralNetworksSimulation
 {
@@ -16,14 +17,15 @@ namespace NeuralNetworksSimulation
         private bool logger;
         private Stopwatch stopwatch;
         private long millisecondsTimeLimit = 2000;
-        private float validationData;
+
+        public float ValidationData { get; set; }
 
         public Simulation(INeuralNetwork neuralNetwork, bool logger = false, float validationData = 0f)
         {
             this.neuralNetwork = neuralNetwork;
             this.logger = logger;
             stopwatch = new Stopwatch();
-            this.validationData = validationData;
+            this.ValidationData = validationData;
         }
 
         public List<float> TrainByThreshold(List<TrainData> trainData, float threshold)
@@ -80,7 +82,7 @@ namespace NeuralNetworksSimulation
                 }
             }
 
-            return (float)correct/trainData.Count;
+            return (float)correct / trainData.Count;
         }
 
         private int SoftMax(List<float> values)
@@ -104,7 +106,7 @@ namespace NeuralNetworksSimulation
             indexList.Shuffle();
             float error = 0;
 
-            int validationCount = ((int)(trainData.Count*validationData)).Clamp(0, trainData.Count - 1);
+            int validationCount = ((int)(trainData.Count*ValidationData)).Clamp(0, trainData.Count - 1);
             int testCount = trainData.Count - validationCount;
 
             for (int i = 0; i < indexList.Count; i++)
@@ -118,7 +120,7 @@ namespace NeuralNetworksSimulation
                 }
                 else
                 {
-                    if (i < testCount)
+                    if (indexList[i] < testCount)
                     {
                         neuralNetwork.Train(inputs, outputs);
                     }
@@ -128,7 +130,7 @@ namespace NeuralNetworksSimulation
 
                         if (SoftMax(output) != SoftMax(outputs))
                         {
-                            error += 100f / validationCount;
+                            error += 1f / validationCount;
                         }
                     }
                 }

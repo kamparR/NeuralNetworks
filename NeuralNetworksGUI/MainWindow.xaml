@@ -14,7 +14,7 @@
         <chartingToolkit:Chart Name="mcChart" Background="LightSteelBlue" Margin="30,96,38,26">
 
             <chartingToolkit:Chart.Series>
-                <chartingToolkit:LineSeries Name="ChartSeries"  Title="Error"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
+                <chartingToolkit:LineSeries Name="TrainSeries"  Title="Train"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
                     <chartingToolkit:LineSeries.DataPointStyle>
                         <Style TargetType="chartingToolkit:LineDataPoint">
                             <Setter Property="Width" Value="0"/>
@@ -23,17 +23,29 @@
                         </Style>
                     </chartingToolkit:LineSeries.DataPointStyle>
                 </chartingToolkit:LineSeries>
+
+                <chartingToolkit:LineSeries Name="TestSeries"  Title="Test"  ItemsSource="{Binding}" IndependentValueBinding="{Binding Path=Key}" DependentValueBinding="{Binding Path=Value}">
+                    <chartingToolkit:LineSeries.DataPointStyle>
+                        <Style TargetType="chartingToolkit:LineDataPoint">
+                            <Setter Property="Width" Value="0"/>
+                            <Setter Property="Height" Value="0"/>
+                            <Setter Property="Opacity" Value="0" />
+                            <Setter Property="Background" Value="#00777F"/>
+                        </Style>
+                    </chartingToolkit:LineSeries.DataPointStyle>
+                </chartingToolkit:LineSeries>
             </chartingToolkit:Chart.Series>
+            
 
             <chartingToolkit:Chart.Axes>
                 <chartingToolkit:LinearAxis Orientation="Y" Title="Error" Minimum="0" />
             </chartingToolkit:Chart.Axes>
 
-            <chartingToolkit:Chart.LegendStyle>
+            <!--<chartingToolkit:Chart.LegendStyle>
                 <Style TargetType="datavis:Legend">
                     <Setter Property="Width" Value="0" />
                 </Style>
-            </chartingToolkit:Chart.LegendStyle>
+            </chartingToolkit:Chart.LegendStyle>-->
 
         </chartingToolkit:Chart>
 

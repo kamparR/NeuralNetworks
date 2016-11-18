@@ -49,7 +49,7 @@ namespace NeuralNetworks
             for (int i = 0; i < Weights.Count; i++)
             {
                 float input = i < inputs.Count ? inputs[i] : 1;
-                Weights[i] += learningAlpha*error*input;
+                Weights[i] += learningAlpha * error * input;
             }
 
             return error;

@@ -50,6 +50,10 @@
       <Project>{ed099087-2863-459d-9107-9715ad05300c}</Project>
       <Name>NeuralNetworksSimulation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{A1A34201-64F4-4FCF-9D16-5439F3BEF19C}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

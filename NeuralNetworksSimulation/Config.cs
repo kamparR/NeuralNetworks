@@ -24,6 +24,10 @@ namespace NeuralNetworksSimulation
         public int Repeat = 1;
         public int HiddenNeurons = 0;
         public float ValidationData = 0;
+        public float Momentum = 0;
+        public string ImagesPath = @"D:\Studia\Semestr VII\Sieci neuronowe\NeuralNetworks\PngData\";
+        public float ImagesDisturbanceProbability = 0;
+        public float ImageDisturbanceMaxDifference = 0;
 
         public static string GetCsvHeaders()
         {
@@ -41,7 +45,7 @@ namespace NeuralNetworksSimulation
         {
             var weightInitializer = new WeightInitializer(Weights.Min, Weights.Max);
             var activationFunction = CreateActivationFunction();
-            var neuron = CreateNeuron(activationFunction, Alpha);
+            var neuron = CreateNeuron(activationFunction);
             var neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer, HiddenNeurons);
             var simulation = new Simulation(neuralNetwork, true, ValidationData);
             return simulation;
@@ -77,22 +81,22 @@ namespace NeuralNetworksSimulation
             return activationFunction;
         }
 
-        public INeuron CreateNeuron(IActivationFunction activationFunction, float alpha)
+        public INeuron CreateNeuron(IActivationFunction activationFunction)
         {
             INeuron neuron = null;
             Func<string, bool> equals = value => string.Equals(Neuron, value, StringComparison.InvariantCultureIgnoreCase);
 
             if (equals("Perceptron"))
             {
-                neuron = new Perceptron(activationFunction, alpha);
+                neuron = new Perceptron(activationFunction, Alpha);
             }
             else if (equals("Adaline"))
             {
-                neuron = new Adaline(activationFunction, alpha);
+                neuron = new Adaline(activationFunction, Alpha);
             }
             else if (equals("BackpropagationNeuron"))
             {
-                neuron = new BackpropagationNeuron(activationFunction, alpha);
+                neuron = new BackpropagationNeuron(activationFunction, Alpha, Momentum);
             }
             else
             {

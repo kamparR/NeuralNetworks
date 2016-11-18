@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace NeuralNetworksGUI
+namespace Utils
 {
     public class MTObservableCollection<T> : ObservableCollection<T>
     {
