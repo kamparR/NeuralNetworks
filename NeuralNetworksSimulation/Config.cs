@@ -28,6 +28,7 @@ namespace NeuralNetworksSimulation
         public string ImagesPath = @"D:\Studia\Semestr VII\Sieci neuronowe\NeuralNetworks\PngData\";
         public float ImagesDisturbanceProbability = 0;
         public float ImageDisturbanceMaxDifference = 0;
+        public int MaxEpoch = 100;
 
         public static string GetCsvHeaders()
         {
@@ -47,7 +48,11 @@ namespace NeuralNetworksSimulation
             var activationFunction = CreateActivationFunction();
             var neuron = CreateNeuron(activationFunction);
             var neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer, HiddenNeurons);
-            var simulation = new Simulation(neuralNetwork, true, ValidationData);
+            var simulation = new Simulation(neuralNetwork, true);
+            simulation.ValidationData = ValidationData;
+            simulation.ImagesDisturbanceProbability = ImagesDisturbanceProbability;
+            simulation.ImageDisturbanceMaxDifference = ImageDisturbanceMaxDifference;
+            simulation.MaxEpoch = MaxEpoch;
             return simulation;
         }
 

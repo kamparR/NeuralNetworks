@@ -19,13 +19,15 @@ namespace NeuralNetworksSimulation
         private long millisecondsTimeLimit = 2000;
 
         public float ValidationData { get; set; }
+        public float ImagesDisturbanceProbability { set; get; }
+        public float ImageDisturbanceMaxDifference { set; get; }
+        public int MaxEpoch { set; get; }
 
-        public Simulation(INeuralNetwork neuralNetwork, bool logger = false, float validationData = 0f)
+        public Simulation(INeuralNetwork neuralNetwork, bool logger = false)
         {
             this.neuralNetwork = neuralNetwork;
             this.logger = logger;
             stopwatch = new Stopwatch();
-            this.ValidationData = validationData;
         }
 
         public List<float> TrainByThreshold(List<TrainData> trainData, float threshold)
@@ -106,38 +108,16 @@ namespace NeuralNetworksSimulation
             indexList.Shuffle();
             float error = 0;
 
-            int validationCount = ((int)(trainData.Count*ValidationData)).Clamp(0, trainData.Count - 1);
-            int testCount = trainData.Count - validationCount;
-
             for (int i = 0; i < indexList.Count; i++)
             {
                 var inputs = trainData[indexList[i]].Inputs;
                 var outputs = trainData[indexList[i]].Outputs;
-
-                if (validationCount == 0)
-                {
-                    error += neuralNetwork.Train(inputs, outputs) / trainData.Count;
-                }
-                else
-                {
-                    if (indexList[i] < testCount)
-                    {
-                        neuralNetwork.Train(inputs, outputs);
-                    }
-                    else
-                    {
-                        var output = neuralNetwork.Compute(inputs);
-
-                        if (SoftMax(output) != SoftMax(outputs))
-                        {
-                            error += 1f / validationCount;
-                        }
-                    }
-                }
+                
+                error += neuralNetwork.Train(inputs, outputs);
                 
             }
 
-            return error;
+            return error / trainData.Count;
         }
 
 

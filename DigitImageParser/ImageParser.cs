@@ -16,6 +16,9 @@ namespace DigitImageParser
         private Random random;
         private int originalCount;
         public List<DigitImage> DigitImages { get; }
+        public List<TrainData> TrainData { private set; get; }
+        public List<TrainData> TestData { private set; get; }
+
 
         public ImageParser(string path)
         {
@@ -44,25 +47,36 @@ namespace DigitImageParser
 
                 DigitImages.Add(digitImage);
             }
-
+            
+            DigitImages.Shuffle();
             originalCount = DigitImages.Count;
         }
 
-        public void AddDisturbance(float probability = 0.1f, float maxDifference = 1)
+        public void GenerateDataSets(float validationData, float disturbanceProbability = 0.1f, float disturbanceMaxDifference = 1)
         {
-            for (int i = 0; i < originalCount; i++)
+            int testDataCount = ((int)(DigitImages.Count * validationData)).Clamp(0, DigitImages.Count - 1);
+            var testImages = DigitImages.GetRange(0, testDataCount);
+            var trainImages = DigitImages.GetRange(testDataCount, DigitImages.Count - testDataCount);
+
+            TestData = testImages.ConvertAll(x => x.ConvertToTrainData());
+
+            if (disturbanceProbability > 0)
             {
-                var imageCopy = new DigitImage(DigitImages[i]);
-                imageCopy.Disturb(probability, maxDifference, random);
-                DigitImages.Add(imageCopy);
+                AddDisturbance(trainImages, disturbanceProbability, disturbanceMaxDifference);
             }
+
+            TrainData = trainImages.ConvertAll(x => x.ConvertToTrainData());
         }
 
-        public List<TrainData> GetTrainData()
+        private void AddDisturbance(List<DigitImage> dataSet, float probability = 0.1f, float maxDifference = 1)
         {
-            List<TrainData> trainData = DigitImages.ConvertAll(x => x.ConvertToTrainData());
-            trainData.Shuffle();
-            return trainData;
+            int count = dataSet.Count;
+            for (int i = 0; i < count; i++)
+            {
+                var imageCopy = new DigitImage(dataSet[i]);
+                imageCopy.Disturb(probability, maxDifference, random);
+                dataSet.Add(imageCopy);
+            }
         }
     }
 }
