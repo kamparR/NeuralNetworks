@@ -23,11 +23,16 @@ namespace NeuralNetworksSimulation
         public List<TrainData> TestData;
         public int Repeat = 1;
         public int HiddenNeurons = 0;
+        public List<int> HiddenNeuronsRepeat;
         public float ValidationData = 0;
+        public List<float> ValidationDataRepeat;
         public float Momentum = 0;
+        public List<float> MomentumRepeat;
         public string ImagesPath = @"D:\Studia\Semestr VII\Sieci neuronowe\NeuralNetworks\PngData\";
         public float ImagesDisturbanceProbability = 0;
+        public List<float> ImagesDisturbanceProbabilityRepeat;
         public float ImageDisturbanceMaxDifference = 0;
+        public List<float> ImageDisturbanceMaxDifferenceRepeat;
         public int MaxEpoch = 100;
 
         public static string GetCsvHeaders()
@@ -53,6 +58,7 @@ namespace NeuralNetworksSimulation
             simulation.ImagesDisturbanceProbability = ImagesDisturbanceProbability;
             simulation.ImageDisturbanceMaxDifference = ImageDisturbanceMaxDifference;
             simulation.MaxEpoch = MaxEpoch;
+            simulation.Config = this;
             return simulation;
         }
 
@@ -113,7 +119,13 @@ namespace NeuralNetworksSimulation
 
         public bool CanBeReduced()
         {
-            return (WeightsRepeat != null && WeightsRepeat.Count > 0) || (AlphaRepeat != null && AlphaRepeat.Count > 0);
+            return CanBeReduced(WeightsRepeat) || CanBeReduced(AlphaRepeat) || CanBeReduced(HiddenNeuronsRepeat) || CanBeReduced(ValidationDataRepeat) 
+                || CanBeReduced(MomentumRepeat) || CanBeReduced(ImagesDisturbanceProbabilityRepeat) || CanBeReduced(ImageDisturbanceMaxDifferenceRepeat);
+        }
+
+        private bool CanBeReduced<T>(List<T> fieldRepeat)
+        {
+            return fieldRepeat != null && fieldRepeat.Count > 0;
         }
 
         public List<Config> Reduce()
@@ -122,34 +134,42 @@ namespace NeuralNetworksSimulation
 
             if (CanBeReduced())
             {
-                if (WeightsRepeat == null)
-                {
-                    WeightsRepeat = new List<Range>();
-                }
-
-                if (AlphaRepeat == null)
-                {
-                    AlphaRepeat = new List<float>();
-                }
-
-                if (Weights != null)
-                {
-                    WeightsRepeat.Add(Weights);
-                }
-
-                if (Math.Abs(Alpha) > float.Epsilon)
-                {
-                    AlphaRepeat.Add(Alpha);
-                }
+                InitReduce(ref WeightsRepeat, Weights);
+                InitReduce(ref AlphaRepeat, Alpha);
+                InitReduce(ref HiddenNeuronsRepeat, HiddenNeurons);
+                InitReduce(ref ValidationDataRepeat, ValidationData);
+                InitReduce(ref MomentumRepeat, Momentum);
+                InitReduce(ref ImagesDisturbanceProbabilityRepeat, ImagesDisturbanceProbability);
+                InitReduce(ref ImageDisturbanceMaxDifferenceRepeat, ImageDisturbanceMaxDifference);
 
                 foreach (var weight in WeightsRepeat)
                 {
                     foreach (var alpha in AlphaRepeat)
                     {
-                        Config clone = (Config)this.MemberwiseClone();
-                        clone.Weights = weight;
-                        clone.Alpha = alpha;
-                        reducedConfigs.Add(clone);
+                        foreach (var hiddenNeurons in HiddenNeuronsRepeat)
+                        {
+                            foreach (var validationData in ValidationDataRepeat)
+                            {
+                                foreach (var momentum in MomentumRepeat)
+                                {
+                                    foreach (var imageDisturbanceProbability in ImagesDisturbanceProbabilityRepeat)
+                                    {
+                                        foreach (var imageDisturbanceMaxDifference in ImageDisturbanceMaxDifferenceRepeat)
+                                        {
+                                            Config clone = (Config)this.MemberwiseClone();
+                                            clone.Weights = weight;
+                                            clone.Alpha = alpha;
+                                            clone.HiddenNeurons = hiddenNeurons;
+                                            clone.ValidationData = validationData;
+                                            clone.Momentum = momentum;
+                                            clone.ImagesDisturbanceProbability = imageDisturbanceProbability;
+                                            clone.ImageDisturbanceMaxDifference = imageDisturbanceMaxDifference;
+                                            reducedConfigs.Add(clone);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -159,6 +179,15 @@ namespace NeuralNetworksSimulation
             }
 
             return reducedConfigs;
+        }
+
+        private void InitReduce<T>(ref List<T> fieldRepeat, T field)
+        {
+            if (fieldRepeat == null)
+            {
+                fieldRepeat = new List<T>();
+                fieldRepeat.Add(field);
+            }
         }
 
         public class Range

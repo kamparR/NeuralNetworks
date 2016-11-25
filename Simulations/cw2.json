@@ -6,7 +6,7 @@
 		alpha: 0.03,
 		inputs: 70,
 		outputs: 10,
-		hiddenNeurons: 30,
+		hiddenNeurons: 60,
 		validationData: 0.15,
 		maxEpoch: 100,
 		momentum: 0,

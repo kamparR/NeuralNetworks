@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using NeuralNetworksSimulation;
 using MessageBox = System.Windows.MessageBox;
 using Utils;
+using LatexBuilder;
 
 namespace NeuralNetworksGUI
 {
@@ -25,6 +26,7 @@ namespace NeuralNetworksGUI
         private List<Simulation> simulations;
         private Timer trainTimer;
         private int currentSimulationNumber = 0;
+        private LatexFile latexFile;
 
         public MainWindow()
         {
@@ -33,6 +35,7 @@ namespace NeuralNetworksGUI
             TestSeriesSource = new MTObservableCollection<KeyValuePair<int, float>>();
             TrainSeries.DataContext = TrainSeriesSource;
             TestSeries.DataContext = TestSeriesSource;
+            latexFile = new LatexFile(@"D:\Studia\Semestr VII\Sieci neuronowe\Sprawozdanie\sprawozdanie-2");
         }
 
         private void EvaluateSimulation()
@@ -86,6 +89,14 @@ namespace NeuralNetworksGUI
                     epoch = 0;
                     TrainSimulation(simulationNumber + 1, allSimlations);
                 }
+                else
+                {
+                    latexFile.Generate(imageParser.TestData);
+                    StopBtn.IsEnabled = false;
+                    LoadBtn.IsEnabled = true;
+                    EnableButtons();
+                    MessageBox.Show("Success");
+                }
             };
         }
 
@@ -98,12 +109,14 @@ namespace NeuralNetworksGUI
 
             TrainSeriesSource.Clear();
             TestSeriesSource.Clear();
+            latexFile.Clear();
             EnableButtons();
         }
 
         private void LogSimulationTrainStep(Simulation simulation, int simulationNumber, int epoch, float correctTrain, float correctTest)
         {
-            
+            float value = (1f - correctTest) *100f;
+            latexFile.AddChartValue(simulation, value);
         }
 
         private void AddTrainSeriesValue(float corrects)

@@ -22,6 +22,7 @@ namespace NeuralNetworksSimulation
         public float ImagesDisturbanceProbability { set; get; }
         public float ImageDisturbanceMaxDifference { set; get; }
         public int MaxEpoch { set; get; }
+        public Config Config { set; get; }
 
         public Simulation(INeuralNetwork neuralNetwork, bool logger = false)
         {

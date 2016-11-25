@@ -109,6 +109,10 @@
       <Project>{a076a692-c56c-4d07-9b61-2813aeeec40b}</Project>
       <Name>DigitImageParser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LatexBuilder\LatexBuilder.csproj">
+      <Project>{BE6BB2BB-BD35-49CB-8A69-936A91CAAAB8}</Project>
+      <Name>LatexBuilder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NeuralNetworksSimulation\NeuralNetworksSimulation.csproj">
       <Project>{ED099087-2863-459D-9107-9715AD05300C}</Project>
       <Name>NeuralNetworksSimulation</Name>
