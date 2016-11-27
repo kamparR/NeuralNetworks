@@ -40,9 +40,10 @@ namespace NeuralNetworksGUI
 
         private void EvaluateSimulation()
         {
-            var correct = simulations[currentSimulationNumber].TestSoftMax(imageParser.TestData);
+            //var correct = simulations[currentSimulationNumber].TestSoftMax(imageParser.TestData);
+            //MessageBox.Show($"Result: {(correct*10000)/100}%");
 
-            MessageBox.Show($"Result: {(correct*10000)/100}%");
+            GenerateNetworkImages();
 
             EnableButtons();
         }
@@ -63,14 +64,16 @@ namespace NeuralNetworksGUI
             trainTimer.Interval = 1;
             trainTimer.Tick += (s, args) =>
             {
-                float error = simulation.Train(imageParser.TrainData);
-                float correctTrain = simulation.TestSoftMax(imageParser.TrainData);
-                float correctTest = simulation.TestSoftMax(imageParser.TestData);
-                
-                AddTrainSeriesValue(correctTrain);
-                AddTestSeriesValue(correctTest);
+                float error = simulation.TrainAutoencoder(imageParser.TrainData);
+                //float correctTrain = simulation.TestSoftMax(imageParser.TrainData);
+                //float correctTest = simulation.TestSoftMax(imageParser.TestData);
 
-                LogSimulationTrainStep(simulation, simulationNumber, epoch, correctTrain, correctTest);
+                //AddTrainSeriesValue(correctTrain);
+                //AddTestSeriesValue(correctTest);
+
+                AddTrainSeriesValue(error);
+
+                //LogSimulationTrainStep(simulation, simulationNumber, epoch, correctTrain, correctTest);
 
                 epoch++;
                 if (maxEpoch > 0 && epoch >= maxEpoch)
@@ -121,7 +124,8 @@ namespace NeuralNetworksGUI
 
         private void AddTrainSeriesValue(float corrects)
         {
-            float value = (1f - corrects)*100f;
+            float value = corrects;
+            //float value = (1f - corrects)*100f;
             TrainSeriesSource.Add(new KeyValuePair<int, float>(TrainSeriesSource.Count, value));
         }
 
@@ -204,6 +208,12 @@ namespace NeuralNetworksGUI
             LoadBtn.IsEnabled = false;
 
             TrainSimulation(0, true);
+        }
+
+        private void GenerateNetworkImages()
+        {
+            var imageWindow = new ImageWindow(imageParser.DigitImages, simulations[0]);
+            imageWindow.ShowDialog();
         }
     }
 }

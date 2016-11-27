@@ -14,5 +14,6 @@ namespace NeuralNetworks
         float Compute(List<float> inputs);
         float Train(List<float> inputs, float correctOutput);
         INeuron Copy();
+        List<float> GetFeature(int inputs);
     }
 }

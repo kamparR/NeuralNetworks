@@ -69,5 +69,10 @@ namespace NeuralNetworks
 
             return sum;
         }
+
+        public virtual List<float> GetFeature(int inputs)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

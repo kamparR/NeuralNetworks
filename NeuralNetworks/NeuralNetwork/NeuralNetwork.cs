@@ -81,5 +81,10 @@ namespace NeuralNetworks
                 layer.ReinitializeWeights();
             }
         }
+
+        public List<float> GetFeature(int layer, int neuron)
+        {
+            return layers[layer].GetFeature(neuron);
+        }
     }
 }

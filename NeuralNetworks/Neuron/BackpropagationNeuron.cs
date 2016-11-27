@@ -60,5 +60,25 @@ namespace NeuralNetworks
         {
             weightsDelta = Enumerable.Repeat(0f, Weights.Count).ToList();
         }
+
+        public override List<float> GetFeature(int inputs)
+        {
+            var result = Enumerable.Repeat(0f, inputs).ToList();
+            float sum = 0;
+
+            for (int i = 0; i < inputs; i++)
+            {
+                sum += Weights[i]*Weights[i];
+            }
+
+            sum = (float)Math.Sqrt(sum);
+
+            for (int i = 0; i < inputs; i++)
+            {
+                result[i] = Weights[i]/sum;
+            }
+
+            return result;
+        }
     }
 }

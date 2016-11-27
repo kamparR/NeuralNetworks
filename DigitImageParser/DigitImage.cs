@@ -12,6 +12,8 @@ namespace DigitImageParser
     {
         public int Digit { get; set; }
         public List<float> Pixels { get; } = new List<float>();
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public DigitImage()
         {

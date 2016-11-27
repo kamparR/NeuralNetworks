@@ -1,0 +1,16 @@
+﻿<Window x:Class="NeuralNetworksGUI.ImageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeuralNetworksGUI"
+        mc:Ignorable="d"
+        Title="Image" Height="402.326" Width="726.581">
+    <Grid>
+        <Button x:Name="NextImageBtn" Content="Next image" HorizontalAlignment="Left" Margin="211,24,0,0" VerticalAlignment="Top" Width="75" Click="NextImageBtn_Click"/>
+        <Button x:Name="NextFeatureBtn" Content="Next feature" HorizontalAlignment="Left" Margin="556,24,0,0" VerticalAlignment="Top" Width="85" Click="NextFeatureBtn_Click"/>
+        <Canvas Name="FirstCanvas" HorizontalAlignment="Left" Height="240" Margin="48,93,0,0" VerticalAlignment="Top" Width="159"/>
+        <Canvas Name="SecondCanvas" HorizontalAlignment="Left" Height="240" Margin="285,93,0,0" VerticalAlignment="Top" Width="159"/>
+        <Canvas Name="ThirdCanvas" HorizontalAlignment="Left" Height="240" Margin="516,93,0,0" VerticalAlignment="Top" Width="159"/>
+    </Grid>
+</Window>

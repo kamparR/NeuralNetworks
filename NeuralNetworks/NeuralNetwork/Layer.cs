@@ -75,5 +75,10 @@ namespace NeuralNetworks
                 neuron.Weights = weights;
             }
         }
+
+        public List<float> GetFeature(int neuron)
+        {
+            return neurons[neuron].GetFeature(this.inputs);
+        }
     }
 }

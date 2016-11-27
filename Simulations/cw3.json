@@ -1,0 +1,18 @@
+[
+	{
+		neuron: "BackpropagationNeuron",
+		activationFunction: "SigmoidFunction",
+		weights: { min: -0.2, max: 0.2 },
+		alpha: 0.03,
+		inputs: 70,
+		outputs: 70,
+		hiddenNeurons: 70,
+		validationData: 0,
+		maxEpoch: 100,
+		momentum: 0,
+		imagesPath: "D:/Studia/Semestr VII/Sieci neuronowe/NeuralNetworks/PngData/",
+		imagesDisturbanceProbability: 0,
+		imageDisturbanceMaxDifference: 0.3,
+		repeat: 1
+	},
+]

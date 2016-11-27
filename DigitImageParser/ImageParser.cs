@@ -35,6 +35,8 @@ namespace DigitImageParser
                 Bitmap bitmap = new Bitmap(filePath);
                 var digitImage = new DigitImage();
                 digitImage.Digit = digit;
+                digitImage.Width = bitmap.Width;
+                digitImage.Height = bitmap.Height;
 
                 for (int y = 0; y < bitmap.Height; y++)
                 {

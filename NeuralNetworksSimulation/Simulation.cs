@@ -79,28 +79,13 @@ namespace NeuralNetworksSimulation
             {
                 var output = neuralNetwork.Compute(data.Inputs);
 
-                if (SoftMax(output) == SoftMax(data.Outputs))
+                if (TrainData.SoftMax(output) == data.SoftMax())
                 {
                     correct++;
                 }
             }
 
             return (float)correct / trainData.Count;
-        }
-
-        private int SoftMax(List<float> values)
-        {
-            int result = -1;
-
-            for (int i = 0; i < values.Count; i++)
-            {
-                if (result < 0 || values[i] > values[result])
-                {
-                    result = i;
-                }
-            }
-
-            return result;
         }
 
         public float Train(List<TrainData> trainData)
@@ -121,6 +106,22 @@ namespace NeuralNetworksSimulation
             return error / trainData.Count;
         }
 
+        public float TrainAutoencoder(List<TrainData> trainData)
+        {
+            List<int> indexList = Enumerable.Range(0, trainData.Count).ToList();
+            indexList.Shuffle();
+            float error = 0;
+
+            for (int i = 0; i < indexList.Count; i++)
+            {
+                var inputs = trainData[indexList[i]].Inputs;
+
+                error += neuralNetwork.Train(inputs, inputs);
+
+            }
+
+            return error / trainData.Count;
+        }
 
         private void Log(string message)
         {
@@ -128,6 +129,16 @@ namespace NeuralNetworksSimulation
             {
                 Console.WriteLine(message);
             }
+        }
+
+        public int GetHiddenNeuronsNumber()
+        {
+            return Config.HiddenNeurons;
+        }
+
+        public List<float> GetFeature(int hiddenNeuronNumber)
+        {
+            return neuralNetwork.GetFeature(0, hiddenNeuronNumber);
         }
     }
 }
