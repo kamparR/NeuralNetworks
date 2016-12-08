@@ -82,9 +82,9 @@ namespace NeuralNetworks
             }
         }
 
-        public List<float> GetFeature(int layer, int neuron)
+        public List<float> GetFeature(int layer, int neuron, List<float> inputs)
         {
-            return layers[layer].GetFeature(neuron);
+            return layers[layer].GetFeature(neuron, inputs);
         }
     }
 }

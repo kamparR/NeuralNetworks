@@ -136,9 +136,9 @@ namespace NeuralNetworksSimulation
             return Config.HiddenNeurons;
         }
 
-        public List<float> GetFeature(int hiddenNeuronNumber)
+        public List<float> GetFeature(int hiddenNeuronNumber, List<float> inputs)
         {
-            return neuralNetwork.GetFeature(0, hiddenNeuronNumber);
+            return neuralNetwork.GetFeature(0, hiddenNeuronNumber, inputs);
         }
     }
 }

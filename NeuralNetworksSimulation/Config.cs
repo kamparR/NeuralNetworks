@@ -28,6 +28,8 @@ namespace NeuralNetworksSimulation
         public List<float> ValidationDataRepeat;
         public float Momentum = 0;
         public List<float> MomentumRepeat;
+        public float Regularization = 0;
+        public List<float> RegularizationRepeat;
         public string ImagesPath = @"D:\Studia\Semestr VII\Sieci neuronowe\NeuralNetworks\PngData\";
         public float ImagesDisturbanceProbability = 0;
         public List<float> ImagesDisturbanceProbabilityRepeat;
@@ -107,7 +109,7 @@ namespace NeuralNetworksSimulation
             }
             else if (equals("BackpropagationNeuron"))
             {
-                neuron = new BackpropagationNeuron(activationFunction, Alpha, Momentum);
+                neuron = new BackpropagationNeuron(activationFunction, Alpha, Momentum, Regularization);
             }
             else
             {
@@ -120,7 +122,8 @@ namespace NeuralNetworksSimulation
         public bool CanBeReduced()
         {
             return CanBeReduced(WeightsRepeat) || CanBeReduced(AlphaRepeat) || CanBeReduced(HiddenNeuronsRepeat) || CanBeReduced(ValidationDataRepeat) 
-                || CanBeReduced(MomentumRepeat) || CanBeReduced(ImagesDisturbanceProbabilityRepeat) || CanBeReduced(ImageDisturbanceMaxDifferenceRepeat);
+                || CanBeReduced(MomentumRepeat) || CanBeReduced(ImagesDisturbanceProbabilityRepeat) || CanBeReduced(ImageDisturbanceMaxDifferenceRepeat)
+                || CanBeReduced(RegularizationRepeat);
         }
 
         private bool CanBeReduced<T>(List<T> fieldRepeat)
@@ -141,6 +144,7 @@ namespace NeuralNetworksSimulation
                 InitReduce(ref MomentumRepeat, Momentum);
                 InitReduce(ref ImagesDisturbanceProbabilityRepeat, ImagesDisturbanceProbability);
                 InitReduce(ref ImageDisturbanceMaxDifferenceRepeat, ImageDisturbanceMaxDifference);
+                InitReduce(ref RegularizationRepeat, Regularization);
 
                 foreach (var weight in WeightsRepeat)
                 {
@@ -156,15 +160,19 @@ namespace NeuralNetworksSimulation
                                     {
                                         foreach (var imageDisturbanceMaxDifference in ImageDisturbanceMaxDifferenceRepeat)
                                         {
-                                            Config clone = (Config)this.MemberwiseClone();
-                                            clone.Weights = weight;
-                                            clone.Alpha = alpha;
-                                            clone.HiddenNeurons = hiddenNeurons;
-                                            clone.ValidationData = validationData;
-                                            clone.Momentum = momentum;
-                                            clone.ImagesDisturbanceProbability = imageDisturbanceProbability;
-                                            clone.ImageDisturbanceMaxDifference = imageDisturbanceMaxDifference;
-                                            reducedConfigs.Add(clone);
+                                            foreach (var regularization in RegularizationRepeat)
+                                            {
+                                                Config clone = (Config)this.MemberwiseClone();
+                                                clone.Weights = weight;
+                                                clone.Alpha = alpha;
+                                                clone.HiddenNeurons = hiddenNeurons;
+                                                clone.ValidationData = validationData;
+                                                clone.Momentum = momentum;
+                                                clone.ImagesDisturbanceProbability = imageDisturbanceProbability;
+                                                clone.ImageDisturbanceMaxDifference = imageDisturbanceMaxDifference;
+                                                clone.Regularization = regularization;
+                                                reducedConfigs.Add(clone);
+                                            }
                                         }
                                     }
                                 }

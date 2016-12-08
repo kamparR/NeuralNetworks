@@ -10,12 +10,14 @@ namespace NeuralNetworks
     public class BackpropagationNeuron : Neuron
     {
         private float momentum;
+        private float regularization;
         private List<float> weightsDelta;
 
-        public BackpropagationNeuron(IActivationFunction activationFunction, float learningAlpha, float momentum = 0f) :
+        public BackpropagationNeuron(IActivationFunction activationFunction, float learningAlpha, float momentum = 0f, float regularization = 0f) :
             base(activationFunction, learningAlpha)
         {
             this.momentum = momentum;
+            this.regularization = regularization;
         }
 
         public BackpropagationNeuron(BackpropagationNeuron backpropagationNeuron) : 
@@ -51,9 +53,7 @@ namespace NeuralNetworks
 
         protected override float ComputeError(List<float> inputs, float errorDifferent)
         {
-            float currentOutput = lastOutput;//Compute(inputs);
-            return activationFunction.ComputeDerivative(currentOutput) * errorDifferent;
-            //return activationFunction.ComputeDerivative(activationFunction.ComputeDerivative(currentOutput)) * errorDifferent;
+            return activationFunction.ComputeDerivative(lastNet) * errorDifferent;
         }
 
         private void InitializeWeightsDelta()
@@ -65,17 +65,54 @@ namespace NeuralNetworks
         {
             var result = Enumerable.Repeat(0f, inputs).ToList();
             float sum = 0;
+            float min = 0;
+            float max = 1;
 
             for (int i = 0; i < inputs; i++)
             {
-                sum += Weights[i]*Weights[i];
+                result[i] = Weights[i];
+
+                if (i == 0 || result[i] < min)
+                {
+                    min = result[i];
+                }
+
+                if (i == 0 || result[i] > max)
+                {
+                    max = result[i];
+                }
+            }
+
+            for (int i = 0; i < inputs; i++)
+            {
+                result[i] = (result[i] - min) / (max - min);
+            }
+
+            for (int i = 0; i < inputs; i++)
+            {
+                sum += result[i] * result[i];
             }
 
             sum = (float)Math.Sqrt(sum);
 
             for (int i = 0; i < inputs; i++)
             {
-                result[i] = Weights[i]/sum;
+                result[i] /= sum;
+
+                if (i == 0 || result[i] < min)
+                {
+                    min = result[i];
+                }
+
+                if (i == 0 || result[i] > max)
+                {
+                    max = result[i];
+                }
+            }
+
+            for (int i = 0; i < inputs; i++)
+            {
+                result[i] = (result[i] - min) / (max - min);
             }
 
             return result;

@@ -43,7 +43,7 @@ namespace DigitImageParser
                     for (int x = 0; x < bitmap.Width; x++)
                     {
                         Color color = bitmap.GetPixel(x, y);
-                        digitImage.Pixels.Add(color.GetBrightness());
+                        digitImage.Pixels.Add(1 - color.GetBrightness());
                     }
                 }
 

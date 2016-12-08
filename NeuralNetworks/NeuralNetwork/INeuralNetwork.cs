@@ -11,6 +11,6 @@ namespace NeuralNetworks
         List<float> Compute(List<float> inputs);
         float Train(List<float> inputs, List<float> correctOutputs);
         void ReinitializeWeights();
-        List<float> GetFeature(int layer, int neuron);
+        List<float> GetFeature(int layer, int neuron, List<float> inputs);
     }
 }

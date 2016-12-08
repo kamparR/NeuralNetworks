@@ -14,6 +14,7 @@ namespace NeuralNetworks
         protected float learningAlpha;
         protected IActivationFunction activationFunction;
         protected float lastOutput;
+        protected float lastNet;
 
         protected Neuron(IActivationFunction activationFunction, float learningAlpha)
         {
@@ -35,8 +36,8 @@ namespace NeuralNetworks
         {
             Debug.Assert(Weights != null);
 
-            float sumOfProduct = SumOfProduct(inputs);
-            lastOutput = activationFunction.Compute(sumOfProduct);
+            lastNet = SumOfProduct(inputs);
+            lastOutput = activationFunction.Compute(lastNet);
             return lastOutput;
         }
 

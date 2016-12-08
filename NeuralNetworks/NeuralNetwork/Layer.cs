@@ -76,8 +76,25 @@ namespace NeuralNetworks
             }
         }
 
-        public List<float> GetFeature(int neuron)
+        public List<float> GetFeature(int neuron, List<float> inputs = null)
         {
+            if (inputs != null)
+            {
+                var output = Compute(inputs);
+                int maxIndex = 0;
+
+                for (int i = 0; i < output.Count; i++)
+                {
+                    if (output[i] > output[maxIndex])
+                    {
+                        maxIndex = i;
+                    }
+                }
+
+                neuron = maxIndex;
+            }
+
+
             return neurons[neuron].GetFeature(this.inputs);
         }
     }

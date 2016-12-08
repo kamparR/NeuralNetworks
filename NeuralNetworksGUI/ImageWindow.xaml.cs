@@ -55,26 +55,29 @@ namespace NeuralNetworksGUI
         {
             FirstCanvas.Children.Clear();
             SecondCanvas.Children.Clear();
+            ThirdCanvas.Children.Clear();
 
             var currentImage = data[currentImageNumber];
             var width = currentImage.Width;
             var inputs = currentImage.Pixels;
             var outputs = simulation.Compute(inputs);
+            var feature = simulation.GetFeature(currentFeatureNumber, inputs);
 
-            Draw(FirstCanvas, inputs, width);
-            Draw(SecondCanvas, outputs, width);
+            Draw(FirstCanvas, inputs, width, true);
+            Draw(SecondCanvas, outputs, width, true);
+            Draw(ThirdCanvas, feature, width, true);
         }
 
         private void RefreshFeatureImage()
         {
             ThirdCanvas.Children.Clear();
             var width = data[currentImageNumber].Width;
-            var values = simulation.GetFeature(currentFeatureNumber);
+            var values = simulation.GetFeature(currentFeatureNumber, null);
 
-            Draw(ThirdCanvas, values, width);
+            Draw(ThirdCanvas, values, width, true);
         }
 
-        private void Draw(Canvas canvas, List<float> pixels, int width)
+        private void Draw(Canvas canvas, List<float> pixels, int width, bool reverse = false)
         {
             float pixelSize = (float) FirstCanvas.Width/width;
             int height = pixels.Count/width;
@@ -85,6 +88,11 @@ namespace NeuralNetworksGUI
                 for (int i = 0; i < width; i++)
                 {
                     float pixelValue = pixels[j*width + i];
+
+                    if (reverse)
+                    {
+                        pixelValue = 1 - pixelValue;
+                    }
 
                     var rectangle = new Rectangle();
                     byte colorPart = (byte) (Byte.MaxValue*pixelValue);
