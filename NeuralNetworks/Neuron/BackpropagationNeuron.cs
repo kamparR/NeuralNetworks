@@ -44,7 +44,7 @@ namespace NeuralNetworks
             {
                 float input = i < inputs.Count ? inputs[i] : 1;
                 float delta = learningAlpha*error*input - momentum * weightsDelta[i];
-                Weights[i] -= delta;
+                Weights[i] = Weights[i] - delta - learningAlpha*regularization*Weights[i];
                 weightsDelta[i] = delta;
             }
 
