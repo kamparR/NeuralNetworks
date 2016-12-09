@@ -7,6 +7,7 @@
 		inputs: 70,
 		outputs: 70,
 		hiddenNeurons: 50,
+		regularization: 0.1,
 		validationData: 0,
 		maxEpoch: 100,
 		momentum: 0,

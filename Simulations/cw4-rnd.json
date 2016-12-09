@@ -1,0 +1,12 @@
+[
+	{
+		network: "SOMNetwork",
+		neuron: "SOMNeuron",
+		activationFunction: "SigmoidFunction",
+		alpha: 0.03,
+		inputs: 3,
+		outputs: 2500,
+		maxEpoch: 2000,
+		repeat: 1
+	},
+]

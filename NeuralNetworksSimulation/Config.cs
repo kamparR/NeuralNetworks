@@ -10,6 +10,7 @@ namespace NeuralNetworksSimulation
 {
     public class Config
     {
+        public string Network = "NeuralNetwork";
         public string Neuron;
         public string ActivationFunction;
         public Range Weights;
@@ -51,10 +52,20 @@ namespace NeuralNetworksSimulation
 
         public Simulation CreateSimulation()
         {
-            var weightInitializer = new WeightInitializer(Weights.Min, Weights.Max);
             var activationFunction = CreateActivationFunction();
             var neuron = CreateNeuron(activationFunction);
-            var neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer, HiddenNeurons);
+            INeuralNetwork neuralNetwork = null;
+
+            if (Network == "NeuralNetwork")
+            {
+                var weightInitializer = new WeightInitializer(Weights.Min, Weights.Max);
+                neuralNetwork = new NeuralNetwork(neuron, Inputs, Outputs, weightInitializer, HiddenNeurons);
+            }
+            else if (Network == "SOMNetwork")
+            {
+                neuralNetwork = new SOMNetwork(neuron, Inputs, Outputs, MaxEpoch);
+            }
+
             var simulation = new Simulation(neuralNetwork, true);
             simulation.ValidationData = ValidationData;
             simulation.ImagesDisturbanceProbability = ImagesDisturbanceProbability;
@@ -110,6 +121,10 @@ namespace NeuralNetworksSimulation
             else if (equals("BackpropagationNeuron"))
             {
                 neuron = new BackpropagationNeuron(activationFunction, Alpha, Momentum, Regularization);
+            }
+            else if (equals("SOMNeuron"))
+            {
+                neuron = new SOMNeuron(activationFunction, Alpha);
             }
             else
             {

@@ -53,10 +53,6 @@ namespace NeuralNetworksGUI
 
         private void RefreshImage()
         {
-            FirstCanvas.Children.Clear();
-            SecondCanvas.Children.Clear();
-            ThirdCanvas.Children.Clear();
-
             var currentImage = data[currentImageNumber];
             var width = currentImage.Width;
             var inputs = currentImage.Pixels;
@@ -70,7 +66,6 @@ namespace NeuralNetworksGUI
 
         private void RefreshFeatureImage()
         {
-            ThirdCanvas.Children.Clear();
             var width = data[currentImageNumber].Width;
             var values = simulation.GetFeature(currentFeatureNumber, null);
 
@@ -79,7 +74,8 @@ namespace NeuralNetworksGUI
 
         private void Draw(Canvas canvas, List<float> pixels, int width, bool reverse = false)
         {
-            float pixelSize = (float) FirstCanvas.Width/width;
+            canvas.Children.Clear();
+            float pixelSize = (float) canvas.Width/width;
             int height = pixels.Count/width;
             canvas.Height = pixelSize*height;
 
@@ -100,6 +96,7 @@ namespace NeuralNetworksGUI
                     var colorBrush = new SolidColorBrush(color);
                     rectangle.Stroke = colorBrush;
                     rectangle.Fill = colorBrush;
+                    rectangle.StrokeThickness = 0;
                     rectangle.Width = pixelSize;
                     rectangle.Height = pixelSize;
                     Canvas.SetLeft(rectangle, i * pixelSize);

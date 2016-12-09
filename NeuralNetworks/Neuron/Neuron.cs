@@ -32,7 +32,7 @@ namespace NeuralNetworks
 
         public abstract INeuron Copy();
 
-        public float Compute(List<float> inputs)
+        public virtual float Compute(List<float> inputs)
         {
             Debug.Assert(Weights != null);
 

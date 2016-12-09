@@ -27,6 +27,7 @@ namespace NeuralNetworksGUI
         private Timer trainTimer;
         private int currentSimulationNumber = 0;
         private LatexFile latexFile;
+        private ColorWindow colorWindow;
 
         public MainWindow()
         {
@@ -35,7 +36,7 @@ namespace NeuralNetworksGUI
             TestSeriesSource = new MTObservableCollection<KeyValuePair<int, float>>();
             TrainSeries.DataContext = TrainSeriesSource;
             TestSeries.DataContext = TestSeriesSource;
-            latexFile = new LatexFile(@"D:\Studia\Semestr VII\Sieci neuronowe\Sprawozdanie\sprawozdanie-2");
+            latexFile = new LatexFile(@"D:\Studia\Semestr VII\Sieci neuronowe\Sprawozdanie\sprawozdanie-3");
         }
 
         private void EvaluateSimulation()
@@ -43,7 +44,16 @@ namespace NeuralNetworksGUI
             //var correct = simulations[currentSimulationNumber].TestSoftMax(imageParser.TestData);
             //MessageBox.Show($"Result: {(correct*10000)/100}%");
 
-            GenerateNetworkImages();
+
+            if (simulations?[currentSimulationNumber]?.Config.Network == "SOMNetwork")
+            {
+                ShowColorWindow();
+                colorWindow?.Update(simulations?[currentSimulationNumber]?.GetFeature(0, new List<float>()));
+            }
+            else
+            {
+                GenerateNetworkImages();
+            }
 
             EnableButtons();
         }
@@ -55,21 +65,42 @@ namespace NeuralNetworksGUI
                 trainTimer.Stop();
                 trainTimer = null;
             }
+
             int epoch = 0;
             var simulation = simulations[simulationNumber];
             int maxEpoch = allSimlations ? simulation.MaxEpoch : -1;
             currentSimulationNumber = simulationNumber;
 
+            if (simulation.Config.Network == "SOMNetwork")
+            {
+                ShowColorWindow();
+                colorWindow?.Update(simulations?[currentSimulationNumber]?.GetFeature(0, new List<float>()));
+            }
+
             trainTimer = new Timer();
             trainTimer.Interval = 1;
             trainTimer.Tick += (s, args) =>
             {
-                float error = simulation.TrainAutoencoder(imageParser.TrainData);
-                //float correctTrain = simulation.TestSoftMax(imageParser.TrainData);
-                //float correctTest = simulation.TestSoftMax(imageParser.TestData);
+                float error = 0;
 
-                //AddTrainSeriesValue(correctTrain);
-                //AddTestSeriesValue(correctTest);
+                if (simulations?[currentSimulationNumber]?.Config.Network == "SOMNetwork")
+                {
+                    error = simulation.TrainSOM();
+
+                    if (true || epoch%10 == 0)
+                    {
+                        colorWindow?.Update(simulations?[currentSimulationNumber]?.GetFeature(0, new List<float>()));
+                    }
+                }
+                else
+                {
+                    error = simulation.TrainAutoencoder(imageParser.TrainData);
+                    //float correctTrain = simulation.TestSoftMax(imageParser.TrainData);
+                    //float correctTest = simulation.TestSoftMax(imageParser.TestData);
+
+                    //AddTrainSeriesValue(correctTrain);
+                    //AddTestSeriesValue(correctTest);
+                }
 
                 AddTrainSeriesValue(error);
 
@@ -150,9 +181,12 @@ namespace NeuralNetworksGUI
 
             simulations = simulationReader.Configs.ConvertAll(x => x.CreateSimulation());
 
-            imageParser = new ImageParser(simulationReader.ImagesPath);
-            imageParser.Parse();
-            imageParser.GenerateDataSets(simulations[0].ValidationData, simulations[0].ImagesDisturbanceProbability, simulations[0].ImageDisturbanceMaxDifference);
+            if (simulations?[currentSimulationNumber]?.Config.Network != "SOMNetwork")
+            {
+                imageParser = new ImageParser(simulationReader.ImagesPath);
+                imageParser.Parse();
+                imageParser.GenerateDataSets(simulations[0].ValidationData, simulations[0].ImagesDisturbanceProbability, simulations[0].ImageDisturbanceMaxDifference);
+            }
 
             EnableButtons();
         }
@@ -214,6 +248,12 @@ namespace NeuralNetworksGUI
         {
             var imageWindow = new ImageWindow(imageParser.DigitImages, simulations[0]);
             imageWindow.ShowDialog();
+        }
+
+        private void ShowColorWindow()
+        {
+            colorWindow = new ColorWindow();
+            colorWindow.Show();
         }
     }
 }

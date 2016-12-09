@@ -17,6 +17,7 @@ namespace NeuralNetworksSimulation
         private bool logger;
         private Stopwatch stopwatch;
         private long millisecondsTimeLimit = 2000;
+        private Random random = new Random();
 
         public float ValidationData { get; set; }
         public float ImagesDisturbanceProbability { set; get; }
@@ -29,6 +30,7 @@ namespace NeuralNetworksSimulation
             this.neuralNetwork = neuralNetwork;
             this.logger = logger;
             stopwatch = new Stopwatch();
+            Reset();
         }
 
         public List<float> TrainByThreshold(List<TrainData> trainData, float threshold)
@@ -121,6 +123,46 @@ namespace NeuralNetworksSimulation
             }
 
             return error / trainData.Count;
+        }
+
+        public float TrainSOM()
+        {
+            bool clear = false;
+            if (Config.TrainData == null || Config.TrainData.Count == 0)
+            {
+                clear = true;
+                Config.TrainData = new List<TrainData>();
+
+                for (int i = 0; i < 20; i++)
+                {
+                    var trainData = new TrainData();
+                    trainData.Inputs = new List<float>();
+
+                    for (int j = 0; j < 3; j++)
+                    {
+                        trainData.Inputs.Add((float)random.NextDouble());
+                    }
+
+                    Config.TrainData.Add(trainData);
+                }
+            }
+
+            List<int> indexList = Enumerable.Range(0, Config.TrainData.Count).ToList();
+            indexList.Shuffle();
+
+            float error = 0;
+
+            for (int j = 0; j < indexList.Count; j++)
+            {
+                error += neuralNetwork.Train(Config.TrainData[j].Inputs, new List<float>());
+            }
+
+            if (clear)
+            {
+                Config.TrainData.Clear();
+            }
+            
+            return error / indexList.Count;
         }
 
         private void Log(string message)
