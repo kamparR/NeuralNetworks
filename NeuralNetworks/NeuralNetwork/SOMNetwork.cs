@@ -30,9 +30,6 @@ namespace NeuralNetworks
 
         public List<float> Compute(List<float> inputs)
         {
-
-
-
             return new List<float>();
         }
 

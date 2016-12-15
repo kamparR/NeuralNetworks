@@ -88,33 +88,6 @@ namespace NeuralNetworks
                 result[i] = (result[i] - min) / (max - min);
             }
 
-            for (int i = 0; i < inputs; i++)
-            {
-                sum += result[i] * result[i];
-            }
-
-            sum = (float)Math.Sqrt(sum);
-
-            for (int i = 0; i < inputs; i++)
-            {
-                result[i] /= sum;
-
-                if (i == 0 || result[i] < min)
-                {
-                    min = result[i];
-                }
-
-                if (i == 0 || result[i] > max)
-                {
-                    max = result[i];
-                }
-            }
-
-            for (int i = 0; i < inputs; i++)
-            {
-                result[i] = (result[i] - min) / (max - min);
-            }
-
             return result;
         }
     }

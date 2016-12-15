@@ -6,7 +6,7 @@
 		alpha: 0.03,
 		inputs: 3,
 		outputs: 2500,
-		maxEpoch: 2000,
+		maxEpoch: 3000,
 		trainData: [
 			{ Inputs: [1, 0, 0] },
 			{ Inputs: [0, 1, 0] },
